@@ -7,10 +7,8 @@ class Player:
         self.color = player_details[1]
         self.count = 0
 
-
     def get_player_name(self):
         return self.name
-
 
     def get_player_color(self):
         return self.color
