@@ -6,13 +6,13 @@ import Board as Board
 class Game:
 
     def __init__(self, player1, player2):
-        self.player1 = Player.Player(player1)
-        self.player2 = Player.Player(player2)
-        self.board = Board.Board()
+        self.player1 = Player.Player(player1) # Track Player 1
+        self.player2 = Player.Player(player2)  # Track Player 2
+        self.board = Board.Board()  # Track Board
         self.winner = None
         self.turn = None
-        self.player1.previous_board = None
-        self.player2.previous_board = None
+        self.player1.previous_board = None  # Track the board state of for player 1
+        self.player2.previous_board = None  # Track the board state of for player 2
 
     def get_player_details(self, number):
         if number == 1:
@@ -37,7 +37,6 @@ class Game:
             return self.get_player_details(1)
         else:
             return self.get_player_details(2)
-
 
     def set_current_turn(self, player):
         self.turn = player.get_player_name()
@@ -79,10 +78,10 @@ class Game:
             return False
 
         elif coordinates[0] == -1 or coordinates[0] == 7:
-            # Check if col coordinate with x-coordinate hits the four corners of board (-1,-1), (-1,7), (7,-1) (7,7)
+            # Check if col coordinate with x-coordinate hits the four corners of board
             if coordinates[1] == -1 or coordinates[1] == 7:
                 return 'X'
-            # Otherwise, check if it's the left side or right side of the board (such as (-1,0), (7,2), etc.)
+            # Check if it's the left side or right side of the board
             elif coordinates[1] in range(0, 7):
                 return 'X'
             # If not, return False
@@ -136,6 +135,7 @@ class Game:
         return False
 
     def check_ko_rule(self, current_board, old_board, player):
+        # Compare the old board with the current board based on the player supplied
         if old_board != current_board.get_board():
             self.set_board_state(current_board)
             if player.get_player_color() == "W":
@@ -159,7 +159,7 @@ class Game:
         if self.get_captured_marbles(2) >= 7:
             self.set_winner(self.get_player_details(2).get_player_name())
 
-        # Scenario where one of the player run out of his marbles
+        # Scenario where one of the player run out of marbles.
         marble_count = self.get_marble_count()
         if marble_count[0] == 0:
             if self.get_player_details(1).get_player_color() == "W":
@@ -417,29 +417,26 @@ def main():
     print("\n")
     print(game.get_current_turn())
     print((6, 5), 'L')
-    print(game.make_move('PlayerA', (6, 5), 'L'))  # True
+    print(game.make_move('PlayerA', (6, 5), 'L'))  # False - Ko Rule Failed this move
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
     print((6, 4), 'F')
-    print(game.make_move('PlayerA', (6, 4), 'F'))
+    print(game.make_move('PlayerA', (6, 4), 'F'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
     print((5, 0), 'R')
-    print(game.make_move('PlayerB', (5, 0), 'R'))
+    print(game.make_move('PlayerB', (5, 0), 'R'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
     print((5, 4), 'F')
-    print(game.make_move('PlayerA', (5, 4), 'F'))
+    print(game.make_move('PlayerA', (5, 4), 'F'))  # True
     game.print_board(game.get_board_state().get_board())
-
-
-
 
 
 if __name__ == '__main__':
