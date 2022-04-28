@@ -1,4 +1,4 @@
-# 2022 Spring Projects - Development of a new game named Kuba - Type 1
+**Development of a new game named Kuba - Type 1**
 
 Kuba is played on a 7x7 square board, with the following setup:
 
@@ -6,9 +6,9 @@ Kuba is played on a 7x7 square board, with the following setup:
 
 Check out the video of the game to understand basic rules: https://www.youtube.com/watch?v=XglqkfzsXYc
 
-Below can be seen data structure view of the starting state of the game: - 
+Below is the **data structure view** of the game state mentained by the code: - 
 
-X - Denotes the empty spaces on the board, R - Neutral Red Marblesm W - White Marbles - Player 1, B - Black Marbles - Player 2
+**X - Denotes the empty spaces on the board, R - Neutral Red Marblesm W - White Marbles - Player 1, B - Black Marbles - Player 2**
 
 	     1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
             2: ['W', 'W', 'X', 'R', 'X', 'B', 'B'],
