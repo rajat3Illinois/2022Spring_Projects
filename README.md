@@ -20,7 +20,7 @@ Description –
 
 A stone may slide one cell in any orthogonal direction, and eventually push other stones.
 
-To slide a stone, there must be access to it. For example, to slide a stone to the left, the space just to the right of the stone being moved, cannot have any stone that it should be X.
+To slide a stone, there must be access to it. For example, to slide a stone to the left, the space just to the right of the stone being moved, cannot have any stone.
 If it results to the end of the board then it can be termed as captured 
 
 KO rule - If a player pushes stones in one direction, the other player may not push these stones back in the opposite direction in his next 
