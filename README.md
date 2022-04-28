@@ -8,7 +8,7 @@ Below can be seen data structure view of the starting state of the game: -
 
 X - Denotes the empty spaces on the board, R - Neutral Red Marblesm W - White Marbles - Player 1, B - Black Marbles - Player 2
 
-	    1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
+	     1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
             2: ['W', 'W', 'X', 'R', 'X', 'B', 'B'],
             3: ['X', 'X', 'R', 'R', 'R', 'X', 'X'],
             4: ['X', 'R', 'R', 'R', 'R', 'R', 'X'],
