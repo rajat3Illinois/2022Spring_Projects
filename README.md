@@ -1,4 +1,4 @@
-**Development of a new game named Kuba - Type 1**
+**Development of a new game named Kuba**
 
 Kuba is played on a 7x7 square board, with the following setup:
 
