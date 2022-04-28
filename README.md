@@ -2,9 +2,7 @@
 
 Kuba is played on a 7x7 square board, with the following setup:
 
-
-
-
+![image](https://user-images.githubusercontent.com/77983115/165850013-2f0a5449-8156-46d2-a5c9-8b68f95f2af0.png)
 
 Below can be seen data structure view of the starting state of the game: - 
 
@@ -14,7 +12,7 @@ W - White Marbles - Player 1
 B - Black Marbles - Player 2
 
 
-			1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
+	    1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
             2: ['W', 'W', 'X', 'R', 'X', 'B', 'B'],
             3: ['X', 'X', 'R', 'R', 'R', 'X', 'X'],
             4: ['X', 'R', 'R', 'R', 'R', 'R', 'X'],
