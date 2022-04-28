@@ -6,11 +6,7 @@ Kuba is played on a 7x7 square board, with the following setup:
 
 Below can be seen data structure view of the starting state of the game: - 
 
-X - Denotes the empty spaces on the board
-R - Neutral Red Marbles
-W - White Marbles - Player 1
-B - Black Marbles - Player 2
-
+X - Denotes the empty spaces on the board, R - Neutral Red Marblesm W - White Marbles - Player 1, B - Black Marbles - Player 2
 
 	    1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
             2: ['W', 'W', 'X', 'R', 'X', 'B', 'B'],
@@ -20,7 +16,6 @@ B - Black Marbles - Player 2
             6: ['B', 'B', 'X', 'R', 'X', 'W', 'W'],
             7: ['B', 'B', 'X', 'X', 'X', 'W', 'W']
             
-
 Description –
 
 A stone may slide one cell in any orthogonal direction, and eventually push other stones.
@@ -36,7 +31,6 @@ Basic Game Rules: -
 
 Any player can start the game. Players then alternate turns. There are no bonus turns.
 Game ends when a player win.
-
 
 Winning Conditions: - 
 
