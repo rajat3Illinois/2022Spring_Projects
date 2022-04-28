@@ -41,7 +41,7 @@ Rules to move a marble:
 
 You need an empty space (freedom) or to be on the edge of the board to make a move in direction (L, R, F, B).
 A player cannot undo a move the opponent just made if it leads to the exact same board position in the subsequent move - (Ko - Rule).
-(Track of one previous state of each player is to be tracked to implement Ko- rule).
+(Track one game state of each player to validate Ko- rule).
 
 
 
