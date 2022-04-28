@@ -3,7 +3,6 @@ import copy
 import Player as Player
 import Board as Board
 
-
 class Game:
 
     def __init__(self, player1, player2):
@@ -90,8 +89,6 @@ class Game:
             return False
         return False
 
-
-
     def get_marble_count(self):
         white_count = 0
         black_count = 0
@@ -115,7 +112,7 @@ class Game:
         if player.get_player_color() == "W":
             if self.get_player1_previous_board() is None:
                 self.set_board_state(current_board)
-                self.set_player1_previous_board(current_board)
+                self.set_player1_previous_board(self.get_board_state().get_board())
                 self.set_current_turn(self.get_player_details(2))
                 self.check_game_winner()
                 return True
@@ -127,7 +124,7 @@ class Game:
         else:
             if self.get_player2_previous_board() is None:
                 self.set_board_state(current_board)
-                self.set_player2_previous_board(current_board)
+                self.set_player2_previous_board(self.get_board_state().get_board())
                 self.set_current_turn(self.get_player_details(1))
                 self.check_game_winner()
                 return True
@@ -139,17 +136,18 @@ class Game:
         return False
 
     def check_ko_rule(self, current_board, old_board, player):
-        if old_board != current_board:
+        if old_board != current_board.get_board():
             self.set_board_state(current_board)
             if player.get_player_color() == "W":
-                self.set_player1_previous_board(current_board)
+                self.set_player1_previous_board(self.get_board_state().get_board())
                 self.turn = self.get_player_details(2).get_player_name()
             else:
-                self.set_player2_previous_board(current_board)
+                self.set_player2_previous_board(self.get_board_state().get_board())
                 self.turn = self.get_player_details(1).get_player_name()
 
             return True
 
+        print("Ko rule is violated at this move")
         return False
 
     def check_game_winner(self):
@@ -412,7 +410,7 @@ def main():
 
     print("\n")
     print(game.get_current_turn())
-    print((6, 1), 'L')
+    print((6, 1), 'R')
     print(game.make_move('PlayerB', (6, 1), 'R'))  # True
     game.print_board(game.get_board_state().get_board())
 
@@ -424,6 +422,24 @@ def main():
 
     print("\n")
     print(game.get_current_turn())
+    print((6, 4), 'F')
+    print(game.make_move('PlayerA', (6, 4), 'F'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((5, 0), 'R')
+    print(game.make_move('PlayerB', (5, 0), 'R'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((5, 4), 'F')
+    print(game.make_move('PlayerA', (5, 4), 'F'))
+    game.print_board(game.get_board_state().get_board())
+
+
+
 
 
 if __name__ == '__main__':

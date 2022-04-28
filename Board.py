@@ -15,6 +15,3 @@ class Board:
 
     def get_board(self):
         return self.board_game
-
-    def update_board(self, board_state):
-        self.board_game = board_state
