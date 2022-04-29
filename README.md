@@ -46,6 +46,8 @@ A player cannot undo a move the opponent just made if it leads to the exact same
 (Track one game state of each player to validate Ko- rule).
 
 
+Do refer the Final_Project_Data_Structures.pdf for the analysis and critical components of the code.
+
 
 
 

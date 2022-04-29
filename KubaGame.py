@@ -1,9 +1,21 @@
-import copy
+"""
+Do refer the readme file and the pdf document for the better understanding of the code and analysis.
+"""
 
+
+
+import copy
 import Player as Player
 import Board as Board
 
+
 class Game:
+    """
+    Game Class that keeps players, board_state, winner, turn,
+    players previous board states
+    Number 1 - Player 1
+    Number 2 - Player 2
+    """
 
     def __init__(self, player1, player2):
         self.player1 = Player.Player(player1) # Track Player 1
@@ -15,6 +27,11 @@ class Game:
         self.player2.previous_board = None  # Track the board state of for player 2
 
     def get_player_details(self, number):
+        """
+        If 1 return player 1, else return player 2
+        :param number:
+        :return:
+        """
         if number == 1:
             return self.player1
         return self.player2
@@ -26,6 +43,11 @@ class Game:
         self.board = board_state
 
     def print_board(self, board):
+        """
+        Print the board for understanding purpose.
+        :param board:
+        :return:
+        """
         for key in board:
             print(board[key])
 
@@ -65,6 +87,11 @@ class Game:
         return self.get_player_details(number).count
 
     def add_capture(self, number):
+        """
+        Adds the cpature marble count.
+        :param number:
+        :return:
+        """
         return self.get_player_details(number).set_player_count()
 
     def get_marble(self, coordinates):
@@ -89,6 +116,10 @@ class Game:
         return False
 
     def get_marble_count(self):
+        """
+        Calculate an each marble count and return it as a tuple.
+        :return: Tuple
+        """
         white_count = 0
         black_count = 0
         red_count = 0
@@ -108,6 +139,13 @@ class Game:
         return marble_count
 
     def validate_board(self, current_board, player):
+        """
+        It validates the board, called inside the make move function.
+        It also validates the ko rule condition
+        :param current_board:
+        :param player:
+        :return: Bool
+        """
         if player.get_player_color() == "W":
             if self.get_player1_previous_board() is None:
                 self.set_board_state(current_board)
@@ -135,7 +173,13 @@ class Game:
         return False
 
     def check_ko_rule(self, current_board, old_board, player):
-        # Compare the old board with the current board based on the player supplied
+        """
+        Compare the old board with the current board based on the player supplied
+        :param current_board:
+        :param old_board:
+        :param player:
+        :return: Bool
+        """
         if old_board != current_board.get_board():
             self.set_board_state(current_board)
             if player.get_player_color() == "W":
@@ -152,15 +196,22 @@ class Game:
         return False
 
     def check_game_winner(self):
+        """
+        Check in case a winner is based on 2 scenarios:-
 
-        # Scenario where 7 or more red marbles are captured.
+        1) Scenario where 7 or more red marbles are captured.
+        2) Scenario where one of the player run out of marbles.
+
+        :return:
+        """
+
         if self.get_captured_marbles(1) >= 7:
             self.set_winner(self.get_player_details(1).get_player_name())
 
         if self.get_captured_marbles(2) >= 7:
             self.set_winner(self.get_player_details(2).get_player_name())
 
-        # Scenario where one of the player run out of marbles.
+
         marble_count = self.get_marble_count()
         if marble_count[0] == 0:
             if self.get_player_details(1).get_player_color() == "W":
@@ -179,19 +230,34 @@ class Game:
 
 
     def make_move(self, player_name, coordinates, direction):
+        """
+        It allows the player to make a move. Depending on the provided coordinates and
+        the direction from (Left, Right, Forward, Backward) - the board is updated is accordingly.
+        validate board function is also called.
+        :param player_name:
+        :param coordinates:
+        :param direction:
+        :return:
+        """
+
         if self.identify_player(player_name):
             player = self.identify_player(player_name)
             if player.get_player_color() == "W":
+                # This is used for updating the turn to second player or vice versa.
                 player_number = 2
             else:
                 player_number = 1
-
+            # If there is no winner, then only perfrom this.
             if self.winner is None:
+                # Condition to check that the player is moving it's own marble
                 if self.get_marble(coordinates) == player.get_player_color():
+                    # Identify the freedom from the choosen coordinates.
                     north = self.get_marble((coordinates[0] - 1, coordinates[1]))
                     south = self.get_marble((coordinates[0] + 1, coordinates[1]))
                     east = self.get_marble((coordinates[0], coordinates[1] + 1))
                     west = self.get_marble((coordinates[0], coordinates[1] -1))
+
+                    # Depending upon the directions there are 4 scenarios - (L,R, F, B)
 
                     if direction == "L":
                         if east == 'X':
@@ -201,11 +267,11 @@ class Game:
                             if west == 'X':
                                 current_row.pop(coordinates[1] - 1)
                                 current_row.insert(coordinates[1], 'X')
-
+                                # Validate the board
                                 return self.validate_board(current_board, player)
 
                             else:
-                                # Check the empty slot on the entire row for movement.
+                                # Check the empty slot on the entire row towards left for the shifting.
                                 empty_position = None
 
                                 for i in range(coordinates[1], -1, -1):
@@ -217,12 +283,15 @@ class Game:
                                     current_row.pop(empty_position)
                                     current_row.insert(coordinates[1], 'X')
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
 
+                                # In case there are no empty slots in the entire row,
+                                # then check if the last element is Red marble or not.
                                 else:
                                     popped_marble = current_row.pop(0)
                                     current_row.insert(coordinates[1], 'X')
-
+                                    # If popped marble is red then it is a capture.
                                     if popped_marble == 'R':
                                         if player_number == 2:
                                             self.add_capture(1)
@@ -232,6 +301,7 @@ class Game:
                                     elif popped_marble == player.get_player_color():
                                         return False
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
                         print("Move is invalid")
                         return False
@@ -245,10 +315,11 @@ class Game:
                                 current_row.pop(coordinates[1] + 1)
                                 current_row.insert(coordinates[1], 'X')
 
+                                # Validate the board
                                 return self.validate_board(current_board, player)
 
                             else:
-                                # Check the empty slot on the entire row for movement.
+                                # Check the empty slot on the entire row towards the right for shifting.
                                 empty_position = None
 
                                 for i in range(coordinates[1],len(current_board.get_board())):
@@ -260,8 +331,11 @@ class Game:
                                     current_row.pop(empty_position)
                                     current_row.insert(coordinates[1], 'X')
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
 
+                                # In case there are no empty slots in the entire row,
+                                # then check if the last element is Red marble or not.
                                 else:
                                     popped_marble = current_row.pop(6)
                                     current_row.insert(coordinates[1], 'X')
@@ -275,6 +349,7 @@ class Game:
                                     elif popped_marble == player.get_player_color():
                                         return False
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
                         print("Move is invalid")
                         return False
@@ -284,9 +359,11 @@ class Game:
                             current_board = copy.deepcopy(self.get_board_state())
                             current_column = list()
 
+                            # In this case we need to identify the column of the board.
                             for value in current_board.get_board().values():
                                 current_column.append(value[coordinates[1]])
 
+                            # If X identified in North, then shift.
                             if north == 'X':
                                 current_column.pop(coordinates[0] - 1)
                                 current_column.insert(coordinates[0], 'X')
@@ -296,10 +373,11 @@ class Game:
                                     value[coordinates[1]] = current_column[count]
                                     count += 1
 
+                                # Validate the board
                                 return self.validate_board(current_board, player)
 
                             else:
-                                # Check the empty slot on the entire row for movement.
+                                # Check the empty slot on the entire column to the top for shifting.
                                 empty_position = None
 
                                 for i in range(coordinates[0], -1, -1):
@@ -316,8 +394,11 @@ class Game:
                                         value[coordinates[1]] = current_column[count]
                                         count += 1
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
 
+                                # If no empty slot, pop the first element in column and then perform shift,
+                                # with the coordinate value turned X (empty)
                                 else:
                                     popped_marble = current_column.pop(0)
                                     current_column.insert(coordinates[0], 'X')
@@ -327,6 +408,7 @@ class Game:
                                         value[coordinates[1]] = current_column[count]
                                         count += 1
 
+                                    # If popped marble is R, then capture the count.
                                     if popped_marble == 'R':
                                         if player_number == 2:
                                             self.add_capture(1)
@@ -336,6 +418,7 @@ class Game:
                                     elif popped_marble == player.get_player_color():
                                         return False
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
                         print("Move is invalid")
                         return False
@@ -357,10 +440,11 @@ class Game:
                                     value[coordinates[1]] = current_column[count]
                                     count += 1
 
+                                # Validate the board
                                 return self.validate_board(current_board, player)
 
                             else:
-                                # Check the empty slot on the entire row for movement.
+                                # Check the empty slot on the entire column till the bottom for shifting.
                                 empty_position = None
 
                                 for i in range(coordinates[0], len(current_board.get_board())):
@@ -377,8 +461,11 @@ class Game:
                                         value[coordinates[1]] = current_column[count]
                                         count += 1
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
 
+                                # If no empty slot, pop the last element of column and then perform shift,
+                                # with the coordinate value turned X (empty)
                                 else:
                                     popped_marble = current_column.pop(6)
                                     current_column.insert(coordinates[0], 'X')
@@ -388,6 +475,7 @@ class Game:
                                         value[coordinates[1]] = current_column[count]
                                         count += 1
 
+                                    # If popped marble is R, then capture the count.
                                     if popped_marble == 'R':
                                         if player_number == 2:
                                             self.add_capture(1)
@@ -397,6 +485,7 @@ class Game:
                                     elif popped_marble == player.get_player_color():
                                         return False
 
+                                    # Validate the board
                                     return self.validate_board(current_board, player)
                         print("Move is invalid")
                         return False
@@ -405,6 +494,10 @@ class Game:
 
 
 def main():
+    """
+    Used for adding the valid moves to the program.
+    :return:
+    """
     game = Game(('PlayerA', 'W'), ('PlayerB', 'B'))
     game.print_board(game.get_board_state().get_board())
     print("\nMarble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
