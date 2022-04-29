@@ -13,5 +13,11 @@ class Player:
     def get_player_color(self):
         return self.color
 
+    def get_player_count(self):
+        return self.count
+
+    def set_player_count(self):
+        self.count += 1
+
 
 

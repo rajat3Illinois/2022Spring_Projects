@@ -43,11 +43,11 @@ class Game:
 
     def get_winner(self):
         if self.winner is not None:
-            return self.winner.get_player_name()
+            return self.winner
         return None
 
-    def set_winner(self, player):
-        self.winner = player
+    def set_winner(self, player_name):
+        self.winner = player_name
 
     def get_player1_previous_board(self):
         return self.player1.previous_board
@@ -65,7 +65,7 @@ class Game:
         return self.get_player_details(number).count
 
     def add_capture(self, number):
-        return self.get_player_details(number).count + 1
+        return self.get_player_details(number).set_player_count()
 
     def get_marble(self, coordinates):
 
@@ -145,6 +145,7 @@ class Game:
                 self.set_player2_previous_board(self.get_board_state().get_board())
                 self.turn = self.get_player_details(1).get_player_name()
 
+            self.check_game_winner()
             return True
 
         print("Ko rule is violated at this move")
@@ -188,8 +189,8 @@ class Game:
             if self.winner is None:
                 if self.get_marble(coordinates) == player.get_player_color():
                     north = self.get_marble((coordinates[0] - 1, coordinates[1]))
-                    south = self.get_marble((coordinates[0] + 1, coordinates[1] -1))
-                    east = self.get_marble((coordinates[0], coordinates[1]+ 1))
+                    south = self.get_marble((coordinates[0] + 1, coordinates[1]))
+                    east = self.get_marble((coordinates[0], coordinates[1] + 1))
                     west = self.get_marble((coordinates[0], coordinates[1] -1))
 
                     if direction == "L":
@@ -222,13 +223,17 @@ class Game:
                                     popped_marble = current_row.pop(0)
                                     current_row.insert(coordinates[1], 'X')
 
-                                    if popped_marble == 'E':
-                                        self.add_capture(player_number)
+                                    if popped_marble == 'R':
+                                        if player_number == 2:
+                                            self.add_capture(1)
+                                        else:
+                                            self.add_capture(2)
 
                                     elif popped_marble == player.get_player_color():
                                         return False
 
                                     return self.validate_board(current_board, player)
+                        print("Move is invalid")
                         return False
 
                     elif direction == 'R':
@@ -261,13 +266,17 @@ class Game:
                                     popped_marble = current_row.pop(6)
                                     current_row.insert(coordinates[1], 'X')
 
-                                    if popped_marble == 'E':
-                                        self.add_capture(player_number)
+                                    if popped_marble == 'R':
+                                        if player_number == 2:
+                                            self.add_capture(1)
+                                        else:
+                                            self.add_capture(2)
 
                                     elif popped_marble == player.get_player_color():
                                         return False
 
                                     return self.validate_board(current_board, player)
+                        print("Move is invalid")
                         return False
 
                     elif direction == "F":
@@ -318,13 +327,17 @@ class Game:
                                         value[coordinates[1]] = current_column[count]
                                         count += 1
 
-                                    if popped_marble == 'E':
-                                        self.add_capture(player_number)
+                                    if popped_marble == 'R':
+                                        if player_number == 2:
+                                            self.add_capture(1)
+                                        else:
+                                            self.add_capture(2)
 
                                     elif popped_marble == player.get_player_color():
                                         return False
 
                                     return self.validate_board(current_board, player)
+                        print("Move is invalid")
                         return False
 
                     elif direction == "B":
@@ -375,13 +388,17 @@ class Game:
                                         value[coordinates[1]] = current_column[count]
                                         count += 1
 
-                                    if popped_marble == 'E':
-                                        self.add_capture(player_number)
+                                    if popped_marble == 'R':
+                                        if player_number == 2:
+                                            self.add_capture(1)
+                                        else:
+                                            self.add_capture(2)
 
                                     elif popped_marble == player.get_player_color():
                                         return False
 
                                     return self.validate_board(current_board, player)
+                        print("Move is invalid")
                         return False
 
                 return False
@@ -392,50 +409,236 @@ def main():
     game.print_board(game.get_board_state().get_board())
     print("\nMarble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
 
-    print((6, 6), 'L')
+    print((7, 7), 'L')
     print(game.make_move('PlayerA', (6, 6), 'L'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((6, 0), 'R')
+    print((7, 1), 'R')
     print(game.make_move('PlayerB', (6, 0), 'R'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((6, 5), 'L')
+    print((7, 6), 'L')
     print(game.make_move('PlayerA', (6, 5), 'L'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((6, 1), 'R')
+    print((7, 2), 'R')
     print(game.make_move('PlayerB', (6, 1), 'R'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((6, 5), 'L')
+    print((7, 6), 'L')
     print(game.make_move('PlayerA', (6, 5), 'L'))  # False - Ko Rule Failed this move
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((6, 4), 'F')
+    print((7, 5), 'F')
     print(game.make_move('PlayerA', (6, 4), 'F'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((5, 0), 'R')
+    print((6, 1), 'R')
     print(game.make_move('PlayerB', (5, 0), 'R'))  # True
     game.print_board(game.get_board_state().get_board())
 
     print("\n")
     print(game.get_current_turn())
-    print((5, 4), 'F')
+    print((6, 5), 'F')
     print(game.make_move('PlayerA', (5, 4), 'F'))  # True
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((6, 2), 'R')
+    print(game.make_move('PlayerB', (5, 1), 'R')) # True
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((1, 1), 'B')
+    print(game.make_move('PlayerA', (0, 0), 'B')) # True
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((6, 3), 'R')
+    print(game.make_move('PlayerB', (5, 2), 'R'))
+    print("White marble is captured in 5th Row (Count from 0)")
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 1), 'B')
+    print(game.make_move('PlayerA', (1, 0), 'B'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((6, 4), 'R')
+    print(game.make_move('PlayerB', (5, 3), 'R'))
+    print("White marble is captured in 5th Row (Count from 0)")
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((4, 1), 'B')
+    print(game.make_move('PlayerA', (3, 0), 'R'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((6, 6), 'B')
+    print(game.make_move('PlayerB', (5, 5), 'B'))
+    print("White marble in 6th Row (Count from 0)")
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((4, 2), 'R')
+    print(game.make_move('PlayerA', (3, 1), 'R'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("\n")
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 7), 'L')
+    print(game.make_move('PlayerB', (1, 6), 'L'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((4, 3), 'R')
+    print(game.make_move('PlayerA', (3, 2), 'R'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("\n")
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 6), 'L')
+    print(game.make_move('PlayerB', (1, 5), 'L'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((4, 4), 'R')
+    print(game.make_move('PlayerA', (3, 3), 'R'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("\n")
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 5), 'L')
+    print(game.make_move('PlayerB', (1, 4), 'L'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((3, 4), 'R')
+    print(game.make_move('PlayerA', (3, 4), 'R'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("\n")
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 4), 'L')
+    print(game.make_move('PlayerB', (1, 3), 'L'))
+    game.print_board(game.get_board_state().get_board())
+
+
+    print("\n")
+    print(game.get_current_turn())
+    print((4, 6), 'R')
+    print(game.make_move('PlayerA', (3, 5), 'R'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("\n")
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((1, 7), 'F')
+    print(game.make_move('PlayerB', (0, 6), 'F'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((3, 1), 'F')
+    print(game.make_move('PlayerA', (2, 0), 'F'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 7), 'B')
+    print(game.make_move('PlayerB', (1, 6), 'B'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 1), 'F')
+    print(game.make_move('PlayerA', (1, 0), 'F'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("\n")
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((1, 6), 'B')
+    print(game.make_move('PlayerB', (0, 5), 'B'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((5, 7), 'B')
+    print(game.make_move('PlayerA', (4, 6), 'B'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((2, 6), 'B')
+    print(game.make_move('PlayerB', (1, 5), 'B'))
+    game.print_board(game.get_board_state().get_board())
+
+    print("\n")
+    print(game.get_current_turn())
+    print((6, 7), 'B')
+    print(game.make_move('PlayerA', (5, 6), 'B'))
+    print("Red marble is captured in 4th row by Player A")
+    print("Red marbles count for Player A is {}".format(game.player1.count))
+    print("Red marbles count for Player B is {}".format(game.player2.count))
+    print("Marble Count (White, Black , Red) is - {} ".format(game.get_marble_count()))
+    print("Winner is {}".format(game.get_winner()))
     game.print_board(game.get_board_state().get_board())
 
 
