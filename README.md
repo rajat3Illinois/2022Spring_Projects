@@ -8,7 +8,7 @@ Check out the video of the game to understand basic rules: https://www.youtube.c
 
 Below is the **data structure view** of the game state mentained by the code: - 
 
-**X - Denotes the empty spaces on the board, R - Neutral Red Marblesm W - White Marbles - Player 1, B - Black Marbles - Player 2**
+**X - Denotes the empty spaces on the board, R - Neutral Red Marbles W - White Marbles - Player 1, B - Black Marbles - Player 2**
 
 	     1: ['W', 'W', 'X', 'X', 'X', 'B', 'B'],
             2: ['W', 'W', 'X', 'R', 'X', 'B', 'B'],
